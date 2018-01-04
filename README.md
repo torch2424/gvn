@@ -12,5 +12,5 @@ Quick Copy-pastable way to prefer remote gvn, over local:
 ```
 # Import of gvn.sh
 # https://github.com/torch2424/gvn
-GVN_PATH="$HOME/.files_libs/gvn.sh"; GVN_URL="https://raw.githubusercontent.com/torch2424/gvn/master/gvn.sh"; if [ -f "$GVN_PATH" ]; then source "$GVN_PATH"; elif curl -o /dev/null -sIf "$GVN_URL"; then curl -s "$GVN_URL" -o /tmp/gvn.sh; source /tmp/gvn.sh; else echo "Could not load gvn from $GVN_PATH or $GVN_URL. Please check your gvn path and internet connection. Halting execution of the script..."; exit 1; fi;
+GVN_PATH="$HOME/.files_libs/gvn/gvn.local.sh"; GVN_URL="https://raw.githubusercontent.com/torch2424/gvn/master/gvn.sh"; if curl -o /dev/null -sIf "$GVN_URL"; then curl -s "$GVN_URL" -o /tmp/gvn.sh; source /tmp/gvn.sh; elif [ -f "$GVN_PATH" ]; then source "$GVN_PATH"; else echo "Could not load gvn from $GVN_PATH or $GVN_URL. Please check your gvn path and internet connection. Halting execution of the script..."; exit 1; fi;
 ```
