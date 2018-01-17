@@ -7,11 +7,12 @@
 
 # Define our path where we would like gvn to live
 GVN_UPDATE_PATH="$HOME/.gvn"
+GVN_SKIP_UPDATE_CHECK="--skip-update-check"
 
 # Check if we have a gvn in our update path, if so use that. And if we are that, keep going
-echo $(dirname $0)
-if [[ "${@: -1}" != "--skip-update-check" ]] && [ -f "$GVN_UPDATE_PATH/gvn.sh" ]; then
-  bash "$GVN_UPDATE_PATH/gvn.sh" "$@" --skip-update-check
+# "${@: -1}" = get last passed argument
+if [[ "${@: -1}" != "$GVN_SKIP_UPDATE_CHECK" ]] && [ -f "$GVN_UPDATE_PATH/gvn.sh" ]; then
+  bash "$GVN_UPDATE_PATH/gvn.sh" "$@" "$GVN_SKIP_UPDATE_CHECK"
   exit 0
 fi
 
@@ -103,7 +104,7 @@ function __printgvninfo() {
 
 # CLI For git users to do svn stuff
 # USing this and learning repo as practice: https://github.com/garethrees/git-to-svn-guide/blob/master/README.md
-if [ "$#" -lt 1 ]; then
+if [ "$#" -lt 1 ] || [ "$1" == "$GVN_SKIP_UPDATE_CHECK" ]; then
   __printgvninfo
 elif [ "$1" == "help" ]; then
   __printgvninfo
