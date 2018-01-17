@@ -1,9 +1,23 @@
 #!/bin/bash
 
-# First define our changelist name
+# gvn.sh
+# By: torch2424
+# repo: https://github.com/torch2424/bebop.sh
+# LICENSE: Apache 2.0
+
+# Define our path where we would like gvn to live
+GVN_UPDATE_PATH="$HOME/.gvn"
+
+# Check if we have a gvn in our update path, if so use that
+if [ -f "$GVN_UPDATE_PATH/gvn.sh" ]; then
+  bash "$GVN_UPDATE_PATH/gvn.sh" "$@"
+  return
+end
+
+# Define our svn changelist name
 GVN_CHANGELIST="gvn-changelist"
 
-function printgvninfo() {
+function __printgvninfo() {
   echo " "
   echo ",---..    ,,---."
   echo "|   | \  / |   |"
@@ -22,6 +36,9 @@ function printgvninfo() {
   echo "2. svn workflow can vary greatly from github. In git it is usually encouraged to branch everything, as merging is not a headache once you understand it. Master is supposed to be an always working build, and feature branches are reviewed before being pulled in. However, rumor is, merging is kind of a pain in svn, because its master branch, called trunk, is a centralized source of truth, and will often times not like what you are brining in. So svn workflows can follow the standard git style. Or follow a wild wild west trunk that everyone just commits to, and makes branches when there is a well tested point in time, or revision, for release."
   echo " "
   echo "Commands:"
+  echo " "
+  echo "gvn update"
+  echo "fetches latest gvn, and places into $GVN_UPDATE_PATH"
   echo " "
   echo "gvn clone [URL of repository]"
   echo "checkout the svn repository"
@@ -67,9 +84,11 @@ function printgvninfo() {
 # CLI For git users to do svn stuff
 # USing this and learning repo as practice: https://github.com/garethrees/git-to-svn-guide/blob/master/README.md
 if [ "$#" -lt 1 ]; then
-  printgvninfo
+  __printgvninfo
+elif [ "$1" == "update" ]; then
+
 elif [ "$1" == "help" ]; then
-  printgvninfo
+  __printgvninfo
 elif [ "$1" == "clone" ]; then
   # Git clone -> svn checkout
   svn checkout "$2"
