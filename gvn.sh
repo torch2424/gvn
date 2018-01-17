@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# gvn.sh
+# gvn
 # By: torch2424
-# repo: https://github.com/torch2424/bebop.sh
+# repo: https://github.com/torch2424/gvn
 # LICENSE: Apache 2.0
 
 # Define our path where we would like gvn to live
@@ -11,12 +11,31 @@ GVN_UPDATE_PATH="$HOME/.gvn"
 # Check if we have a gvn in our update path, if so use that
 if [ -f "$GVN_UPDATE_PATH/gvn.sh" ]; then
   bash "$GVN_UPDATE_PATH/gvn.sh" "$@"
-  return
-end
+  return 0
+fi
+
+# Our URL Path for gvn for updating
+GVN_URL="https://raw.githubusercontent.com/torch2424/gvn/master/gvn.sh"
 
 # Define our svn changelist name
 GVN_CHANGELIST="gvn-changelist"
 
+# Helper function from: https://github.com/torch2424/bebop.sh/blob/master/bebop.sh
+__seek_confirmation() {
+  printf "\n${bold}$@${reset}"
+  read -p " (y/n) " -n 1
+  printf "\n"
+}
+
+# Helper function from: https://github.com/torch2424/bebop.sh/blob/master/bebop.sh
+__is_confirmed() {
+  if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    return 0
+  fi
+  return 1
+}
+
+# Usage Docs
 function __printgvninfo() {
   echo " "
   echo ",---..    ,,---."
@@ -85,10 +104,29 @@ function __printgvninfo() {
 # USing this and learning repo as practice: https://github.com/garethrees/git-to-svn-guide/blob/master/README.md
 if [ "$#" -lt 1 ]; then
   __printgvninfo
-elif [ "$1" == "update" ]; then
-
 elif [ "$1" == "help" ]; then
   __printgvninfo
+elif [ "$1" == "update" ]; then
+  echo " "
+  echo "Gvn will update by creating a $GVN_UPDATE_PATH path, and storing the latest copy of gvn there."
+  echo "Please review the current gvn script at: https://github.com/torch2424/gvn/blob/master/gvn.sh"
+  echo " "
+  __seek_confirmation "Is this okay?"
+  echo " "
+
+  if __is_confirmed; then
+    echo "Updating gvn, please wait a moment..."
+    echo " "
+
+    mkdir "$GVN_UPDATE_PATH"
+    curl "$GVN_URL" -o "$GVN_UPDATE_PATH/gvn.sh"
+
+    echo "Update complete!"
+    echo "Check the latest gvn script at: $GVN_UPDATE_PATH/gvn.sh"
+  else
+    echo "Local gvn will be used. Update cancelled..."
+    echo " "
+  fi
 elif [ "$1" == "clone" ]; then
   # Git clone -> svn checkout
   svn checkout "$2"
