@@ -120,7 +120,9 @@ elif [ "$1" == "update" ]; then
     echo "Updating gvn, please wait a moment..."
     echo " "
 
-    mkdir "$GVN_UPDATE_PATH"
+    if [ ! -f "$GVN_UPDATE_PATH" ]; then
+      mkdir "$GVN_UPDATE_PATH"
+    fi
     curl "$GVN_URL" > "$GVN_UPDATE_PATH/gvn.sh"
 
     echo "Update complete!"
