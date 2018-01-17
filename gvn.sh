@@ -121,7 +121,7 @@ elif [ "$1" == "update" ]; then
     echo " "
 
     mkdir "$GVN_UPDATE_PATH"
-    curl "$GVN_URL" -o "$GVN_UPDATE_PATH/gvn.sh"
+    curl "$GVN_URL" > "$GVN_UPDATE_PATH/gvn.sh"
 
     echo "Update complete!"
     echo "Check the latest gvn script at: $GVN_UPDATE_PATH/gvn.sh"
