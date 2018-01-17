@@ -8,10 +8,11 @@
 # Define our path where we would like gvn to live
 GVN_UPDATE_PATH="$HOME/.gvn"
 
-# Check if we have a gvn in our update path, if so use that
-if [ -f "$GVN_UPDATE_PATH/gvn.sh" ]; then
-  bash "$GVN_UPDATE_PATH/gvn.sh" "$@"
-  return 0
+# Check if we have a gvn in our update path, if so use that. And if we are that, keep going
+echo $(dirname $0)
+if [[ "${@: -1}" != "--skip-update-check" ]] && [ -f "$GVN_UPDATE_PATH/gvn.sh" ]; then
+  bash "$GVN_UPDATE_PATH/gvn.sh" "$@" --skip-update-check
+  exit 0
 fi
 
 # Our URL Path for gvn for updating
