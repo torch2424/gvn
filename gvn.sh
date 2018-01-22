@@ -163,7 +163,6 @@ elif [ "$1" == "checkout" ]; then
 elif [ "$1" == "commit" ]; then
 
   if [ "$#" -gt 1 ] && [ "$2" != "$GVN_SKIP_UPDATE_CHECK" ]; then
-    echo "$#"
     # git add $1 && git commit -m "$2" && git push origin HEAD -> svn commit $2 -m "$3"
     # After &&, # Remove all files from changelist, but keep changelist
     echo "Commiting changelist..."
